@@ -2,6 +2,41 @@
 
 API REST completa com FastAPI, SQLAlchemy e SQLite. CRUD completo de tarefas com documentação interativa automática.
 
+## Arquitetura
+
+```mermaid
+flowchart LR
+    Client(["Cliente\n(curl / browser / app)"])
+    subgraph API ["FastAPI App"]
+        Router["Rotas\nmain.py"]
+        Schema["Validação\nschemas.py"]
+        ORM["ORM\nmodels.py"]
+    end
+    DB[("SQLite\napp.db")]
+
+    Client -->|HTTP Request| Router
+    Router -->|Pydantic| Schema
+    Schema -->|SQLAlchemy| ORM
+    ORM -->|SQL| DB
+    DB -->|Rows| ORM
+    ORM -->|Model| Schema
+    Schema -->|JSON Response| Client
+```
+
+## Modelo de dados
+
+```mermaid
+erDiagram
+    TAREFA {
+        int id PK
+        string titulo
+        string descricao
+        bool concluida
+        datetime criado_em
+        datetime atualizado_em
+    }
+```
+
 ## Tecnologias
 
 - Python 3.11+
